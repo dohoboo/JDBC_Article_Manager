@@ -15,7 +15,7 @@ DESC article;
 INSERT INTO article
 SET regDate = NOW(),
 uadateDate NOW(),
-title = CONCAT('제목', RAND()),
+title = CONCAT('제목', RAND()), 
 `body` = CONCAT('내용', RAND());
 
 SELECT * FROM article;
