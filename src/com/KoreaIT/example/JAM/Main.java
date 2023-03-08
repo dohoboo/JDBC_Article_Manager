@@ -49,19 +49,11 @@ public class Main {
 				System.out.println("== 프로그램 종료 ==");
 				break;
 			}
+			else {
+				System.out.println("명령어를 확인해 주십시오.");
+				continue;
+			}
 		}
 		sc.close();
-	}
-}
-
-class Article {
-	int id;
-	String title;
-	String body;
-
-	public Article(int id, String title, String body) {
-		this.id = id;
-		this.title = title;
-		this.body = body;
 	}
 }
