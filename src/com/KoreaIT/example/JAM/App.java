@@ -23,13 +23,17 @@ public class App {
 
 			ArticleController articleController = new ArticleController(conn, sc);
 			MemberController memberController = new MemberController(conn, sc);
-			
+
 			while (true) {
 				System.out.printf("명령어) ");
 				String cmd = sc.nextLine().trim();
 
 				if (cmd.equals("member join")) {
 					memberController.doJoin();
+				} else if (cmd.equals("member login")) {
+					memberController.doLogin();
+				} else if (cmd.equals("member profile")) {
+					memberController.showProfile();
 				} else if (cmd.equals("article write")) {
 					articleController.doWrite();
 				} else if (cmd.equals("article list")) {
