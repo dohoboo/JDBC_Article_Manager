@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.KoreaIT.example.JAM.dto.Member;
 import com.KoreaIT.example.JAM.service.MemberService;
 import com.KoreaIT.example.JAM.session.Session;
+import com.KoreaIT.example.JAM.util.Util;
 
 public class MemberController {
 
@@ -18,12 +19,12 @@ public class MemberController {
 	}
 
 	public void doJoin() {
-
+		
 		if (Session.isLogined()) {
 			System.out.println("로그아웃 후 이용해주세요");
 			return;
 		}
-
+		
 		String loginId = null;
 		String loginPw = null;
 		String loginPwChk = null;
@@ -97,50 +98,46 @@ public class MemberController {
 	}
 
 	public void doLogin() {
-
 		if (Session.isLogined()) {
 			System.out.println("로그아웃 후 이용해주세요");
 			return;
 		}
-
+		
 		String loginId = null;
 		String loginPw = null;
 		System.out.println("== 로그인 ==");
-
-		while (true) {
+		
+		while(true) {
 			System.out.printf("아이디 : ");
 			loginId = sc.nextLine();
 			System.out.printf("비밀번호 : ");
 			loginPw = sc.nextLine();
-
+			
 			if (loginId.length() == 0) {
 				System.out.println("아이디를 입력해주세요");
 				continue;
 			}
-
+			
 			if (loginPw.length() == 0) {
 				System.out.println("비밀번호를 입력해주세요");
 				continue;
 			}
 
-			boolean isLoginIdDup = memberService.isLoginIdDup(loginId);
-
-			if (isLoginIdDup == false) {
+			Member member = memberService.getMemberByLoginId(loginId);
+			
+			if (member == null) {
 				System.out.printf("%s은(는) 존재하지 않는 아이디입니다\n", loginId);
 				continue;
 			}
-
-			Member member = memberService.getMemberByLoginId(loginId);
-
+			
 			if (member.loginPw.equals(loginPw) == false) {
 				System.out.println("비밀번호가 일치하지 않습니다");
 				continue;
 			}
-
+			
 			Session.login(member);
-
+			
 			System.out.printf("%s님 환영합니다\n", member.name);
-
 			break;
 		}
 	}
@@ -150,20 +147,21 @@ public class MemberController {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
-
+		
 		Session.logout();
-		System.out.println(Session.loginedMember.name + "회원님이 로그아웃하셨습니다.");
+		System.out.println("로그아웃 되었습니다");
 	}
 
 	public void showProfile() {
-
 		if (Session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
-
-		System.out.println("로그인 아이디 : " + Session.loginedMember.loginId);
-		System.out.println("가입일자 : " + Session.loginedMember.regDate);
-		System.out.println("이름 : " + Session.loginedMember.name);
+		
+		System.out.println("== 마이 페이지 ==");
+		System.out.printf("로그인 아이디 : %s\n", Session.loginedMember.loginId);
+		System.out.printf("가입일자 : %s\n", Util.datetimeFormat(Session.loginedMember.regDate));
+		System.out.printf("이름 : %s\n", Session.loginedMember.name);
 	}
+
 }
